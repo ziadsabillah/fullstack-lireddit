@@ -1,17 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@mikro-orm/core");
-const constants_1 = require("./constants");
-const Post_1 = require("./entities/Post");
+require("reflect-metadata");
+const typeorm_1 = require("typeorm");
+require('dotenv').config();
 const main = async () => {
-    const orm = await core_1.MikroORM.init({
-        entities: [Post_1.Post],
-        dbName: 'libreddit',
+    const connection = await (0, typeorm_1.createConnection)({
         type: 'mysql',
-        debug: !constants_1.__prod__,
-        user: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-    });
+        url: process.env.DB_URL
+    }).then(connection => {
+        console.log('Connected successfully to db');
+    }).catch(error => console.error(error));
 };
 main();
 //# sourceMappingURL=index.js.map

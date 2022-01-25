@@ -1,18 +1,23 @@
-import { MikroORM } from "@mikro-orm/core";
-import { __prod__ } from "./constants";
-import { Post } from "./entities/Post";
+import "reflect-metadata";
+import { createConnection, Connection } from "typeorm";
+require('dotenv').config()
+
 
 
 const main = async () => {
- const orm = await MikroORM.init({
-     entities: [Post],
-     dbName: 'libreddit',
-     type: 'mysql',
-     debug: !__prod__,
-     user: process.env.DB_USERNAME,
-     password: process.env.DB_PASSWORD,
- })
+    const connection = await createConnection({
+        type: 'mysql',
+        url: process.env.DB_URL
+    }).then(connection => {
+
+        console.log('Connected successfully to db')
+
+    }).catch(error => console.error(error));
+    
 }
 
 main()
+
+
+
 
